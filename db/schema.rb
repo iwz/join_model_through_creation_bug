@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224223739) do
+ActiveRecord::Schema.define(version: 20170224225447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,25 @@ ActiveRecord::Schema.define(version: 20170224223739) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups_products", force: :cascade do |t|
+    t.integer  "group_id",   null: false
+    t.integer  "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_groups_products_on_group_id", using: :btree
+    t.index ["product_id"], name: "index_groups_products_on_product_id", using: :btree
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "viewable_products", force: :cascade do |t|
@@ -49,6 +68,8 @@ ActiveRecord::Schema.define(version: 20170224223739) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "groups_products", "groups"
+  add_foreign_key "groups_products", "products"
   add_foreign_key "viewable_products_group_components", "viewable_products"
   add_foreign_key "viewable_products_group_components", "viewable_products_groups"
 end
