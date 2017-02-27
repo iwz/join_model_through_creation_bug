@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224225447) do
+ActiveRecord::Schema.define(version: 20170227170925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,27 +49,27 @@ ActiveRecord::Schema.define(version: 20170224225447) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "viewable_groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "viewable_products", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "viewable_products_group_components", force: :cascade do |t|
-    t.integer  "viewable_product_id",        null: false
-    t.integer  "viewable_products_group_id", null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "viewable_product_id", null: false
+    t.integer  "viewable_group_id",   null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["viewable_group_id"], name: "foo2", using: :btree
     t.index ["viewable_product_id"], name: "foo1", using: :btree
-    t.index ["viewable_products_group_id"], name: "foo2", using: :btree
-  end
-
-  create_table "viewable_products_groups", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "groups_products", "groups"
   add_foreign_key "groups_products", "products"
+  add_foreign_key "viewable_products_group_components", "viewable_groups"
   add_foreign_key "viewable_products_group_components", "viewable_products"
-  add_foreign_key "viewable_products_group_components", "viewable_products_groups"
 end
